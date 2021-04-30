@@ -1,2 +1,2 @@
-# github_test
+# C_study
 selfstudy
