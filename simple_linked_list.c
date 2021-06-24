@@ -78,9 +78,9 @@ void node_print(Node* head)
 		printf("데이터가 비어있습니다.\n");
 		return 0;
 	}
+	printf("<<data_list>>\n\n");
 	while (temp != NULL)
 	{
-		printf("<<data_list>>");
 		printf(" %d. 나이:%d  학번:%d\n", count, temp->age, temp->code_num);
 		temp = temp->next;
 		count += 1;
@@ -88,43 +88,67 @@ void node_print(Node* head)
 	printf("\n");
 }
 
-void node_swap(Node* one, Node* two, Node* prevOne, Node* prevTwo)
+void node_swap(Node* one, Node* two)
 {
-	Node* sub = two->next;
-	prevOne->next = two;
-	prevTwo->next = one;
-	one->next = two->next;
-	two->next = sub;
+	Node* temp;
+	temp = one;
+	one = two;
+	two = temp;
 }
 
 void sort(Node* head, int s, int cnt)
 {
-	Node* max = head->next;
-	Node* temp = head->next;
-	Node* target = head;
+	if (cnt == 0)
+	{
+		printf("항목이 없어서 정렬할 수 없습니다.");
+		return;
+	}
+	
+	Node* temp = head, * target = head;
+	Node* min;
+	Node** arr;
+	arr = (Node**)malloc(sizeof(Node) * cnt);
+
+	for (int i = 0; i < cnt; i++)
+	{
+		arr[i] = temp;
+		temp = temp->next;
+	}
 	
 	if (s == 1)//오름차순
 	{
-		for (int i = cnt; i > 0; i--)
+		for (int i = 0; i < cnt - 1; i++)
 		{
-			for (int j = 0; j < i; j++)
-				target = target->next;
-			for (int k = 0; k < cnt-1; k++)
+			min = arr[i];
+			for (int j = i + 1; j < cnt; j++)
 			{
-				if (max->code_num < temp->code_num)
-					max = temp;
-				temp = temp->next;
+				if (min->code_num > arr[j]->code_num)
+					min = arr[j];
 			}
-
-			
+			node_swap(arr[i], min);
 		}
+		printf("오름차순으로 정렬되었습니다.\n");
 	}
 	else if (s == 2)//내림차순
 	{
-
+		for (int i = 0; i < cnt - 1; i++)
+		{
+			min = arr[i];
+			for (int j = i + 1; j < cnt; j++)
+			{
+				if (min->code_num < arr[j]->code_num)
+					min = arr[j];
+			}
+			node_swap(arr[i], min);
+		}
+		printf("내림차순으로 정렬되었습니다.\n");
 	}
+
+
+
 	else
 		printf("잘못된 정렬방식입니다.\n");
+	free(arr);
 }
 
 void all_free(Node* head)
