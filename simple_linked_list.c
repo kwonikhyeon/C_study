@@ -90,26 +90,27 @@ void node_print(Node* head)
 
 void node_swap(Node* one, Node* two)
 {
-	Node* temp;
-	temp = one;
-	one = two;
-	two = temp;
+	Node temp;
+	temp = *one;
+	*one = *two;
+	*two = temp;
 }
 
 void sort(Node* head, int s, int cnt)
 {
-	if (cnt == 0)
+	if (cnt <= 0)
 	{
 		printf("항목이 없어서 정렬할 수 없습니다.");
 		return;
 	}
 	
-	Node* temp = head, * target = head;
+	Node* temp = head->next;
 	Node* min;
 	Node** arr;
 	arr = (Node**)malloc(sizeof(Node) * cnt);
+	int i;
 
-	for (int i = 0; i < cnt; i++)
+	for (i = 0; i < cnt; i++)
 	{
 		arr[i] = temp;
 		temp = temp->next;
@@ -117,7 +118,7 @@ void sort(Node* head, int s, int cnt)
 	
 	if (s == 1)//오름차순
 	{
-		for (int i = 0; i < cnt - 1; i++)
+		for (i = 0; i < cnt - 1; i++)
 		{
 			min = arr[i];
 			for (int j = i + 1; j < cnt; j++)
@@ -144,10 +145,21 @@ void sort(Node* head, int s, int cnt)
 		printf("내림차순으로 정렬되었습니다.\n");
 	}
 
-
-
 	else
+	{
 		printf("잘못된 정렬방식입니다.\n");
+		free(arr);
+		return;
+	}
+	
+	temp = head;
+	for (i = 0; i < cnt; i++)
+	{
+		temp->next = arr[i];
+		temp = arr[i];
+	}
+	temp->next = NULL;
+
 	free(arr);
 }
 
